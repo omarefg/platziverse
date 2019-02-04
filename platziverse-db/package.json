@@ -4,7 +4,8 @@
   "description": "A Simple IoT Platform - DB Module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/omarefg/platziverse/issues"
   },
-  "homepage": "https://github.com/omarefg/platziverse#readme"
+  "homepage": "https://github.com/omarefg/platziverse#readme",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "pg": "^7.8.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.42.0"
+  }
 }
