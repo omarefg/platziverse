@@ -14,6 +14,14 @@ module.exports = function setupMetricModel (config) {
     value: {
       type: Sequelize.TEXT,
       allowNull: false
+    },
+    agentId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    createdAt: {
+      type: Sequelize.DATE,
+      allowNull: false
     }
   })
 }
