@@ -15,16 +15,19 @@ const CONFIG = {
   setup: true
 }
 
+const force = process.argv.filter(f => f === '--force')[0]
 async function setup () {
-  const answer = await prompt([
-    {
-      type: 'confirm',
-      name: 'setup',
-      message: `${chalk.yellow('Esto va a destruir la BBDD, ¿deseas continuar?')}`
-    }
-  ])
-  if (!answer.setup) return console.log(`${chalk.blue('Ah bueno. Menos mal. Bichito ;).')}`)
-  console.log(`${chalk.blue('Espero que sepas lo que haces...')}`)
+  if (!force) {
+    const answer = await prompt([
+      {
+        type: 'confirm',
+        name: 'setup',
+        message: `${chalk.yellow('Esto va a destruir la BBDD, ¿deseas continuar?')}`
+      }
+    ])
+    if (!answer.setup) return console.log(`${chalk.blue('Ah bueno. Menos mal. Bichito ;).')}`)
+    console.log(`${chalk.blue('Espero que sepas lo que haces...')}`)
+  }
   await db(CONFIG).catch(handleFatalError)
   console.log('Success')
   process.exit(0)

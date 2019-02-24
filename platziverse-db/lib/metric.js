@@ -39,8 +39,8 @@ module.exports = function setupMetric (MetricModel, AgentModel) {
         where: {
           uuid
         },
-        raw: true
-      }]
+      }],
+      raw: true
     })
   }
 
