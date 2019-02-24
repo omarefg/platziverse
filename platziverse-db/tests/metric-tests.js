@@ -63,8 +63,8 @@ test.beforeEach(async () => {
   MetricStub.findAll.withArgs(findAllUuidArgs).returns(Promise.resolve(metricFixtures.findByAgentUuid(metricFixtures.single.agentId)))
   MetricStub.findAll.withArgs(findAllTypeArgs).returns(Promise.resolve(metricFixtures.findByTypeAgentUuid(metricFixtures.single.type, metricFixtures.single.agentId)))
 
-  findAllUuidArgs.include[0].model = AgentStub;
-  findAllTypeArgs.include[0].model = AgentStub;
+  findAllUuidArgs.include[0].model = AgentStub
+  findAllTypeArgs.include[0].model = AgentStub
 
   const setupDatabase = proxyquire('../', {
     './models/agent': () => AgentStub,
@@ -92,12 +92,19 @@ test.serial('Metric#create', async t => {
   const metric = await db.Metric.create(metricFixtures.single.agentId, metricToCreate)
   t.true(AgentStub.findOne.called, 'AgentModel.findOne should be called')
   t.true(MetricStub.create.called, 'MetricModel.create should be called')
-  t.deepEqual(metric, metricFixtures.single, 'Should be the same');
+  t.deepEqual(metric, metricFixtures.single, 'Should be the same')
 })
 
 test.serial('Metric#findByAgentUuid', async t => {
   const metric = await db.Metric.findByAgentUuid(metricFixtures.single.agentId)
   t.true(MetricStub.findAll.called, 'MetricModel.findAll should be called')
   t.true(MetricStub.findAll.calledWith(findAllUuidArgs), 'MetricModel.findAll should be called with uuid args')
-  t.deepEqual(metric, metricFixtures.findByAgentUuid(metricFixtures.single.agentId), 'Should be the same');
+  t.deepEqual(metric, metricFixtures.findByAgentUuid(metricFixtures.single.agentId), 'Should be the same')
+})
+
+test.serial('Metric#findByTypeAgentUuid', async t => {
+  const metric = await db.Metric.findByTypeAgentUuid(metricFixtures.single.type, metricFixtures.single.agentId)
+  t.true(MetricStub.findAll.called, 'MetricModel.findAll should be called')
+  t.true(MetricStub.findAll.calledWith(findAllTypeArgs), 'MetricModel.findAll should be called with type args')
+  t.deepEqual(metric, metricFixtures.findByTypeAgentUuid(metricFixtures.single.type, metricFixtures.single.agentId), 'Should be the same')
 })

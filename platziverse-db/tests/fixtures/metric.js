@@ -35,8 +35,10 @@ const metrics = [
   })
 ]
 
+const findByAgentUuid = uuid => metrics.filter(metric => metric.agentId === uuid)
+
 const findByTypeAgentUuid = (type, uuid) => {
-  let metricsToReturn = metrics.filter(m => m.agentId === uuid)
+  let metricsToReturn = findByAgentUuid(uuid)
   if (metricsToReturn.length > 0) {
     metricsToReturn = metricsToReturn.filter(m => m.type === type)
       .map(m => {
@@ -56,6 +58,6 @@ const findByTypeAgentUuid = (type, uuid) => {
 module.exports = {
   single: metric,
   findAll: metrics,
-  findByAgentUuid: uuid => metrics.filter(a => a.agentId === uuid),
+  findByAgentUuid,
   findByTypeAgentUuid
 }
