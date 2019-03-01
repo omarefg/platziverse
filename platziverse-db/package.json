@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/omarefg/platziverse.git"
   },
-  "author": "Omar Flores Grimontt",
+  "author": "@omarefg",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/omarefg/platziverse/issues"
@@ -22,7 +22,7 @@
   "devDependencies": {
     "ava": "^1.2.1",
     "defaults": "^1.0.3",
-    "nyc": "^13.2.0",
+    "nyc": "^13.3.0",
     "proxyquire": "^2.1.0",
     "sinon": "^7.2.3",
     "sqlite3": "^4.0.6",
@@ -34,6 +34,7 @@
     "inquirer": "^6.2.2",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.42.0",
+    "platziverse-utils": "file:../platziverse-utils"
   }
 }

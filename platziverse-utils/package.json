@@ -1,0 +1,23 @@
+{
+  "name": "platziverse-utils",
+  "version": "1.0.0",
+  "description": "Global tools for platziverse",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omarefg/platziverse.git"
+  },
+  "author": "@omarefg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/omarefg/platziverse/issues"
+  },
+  "homepage": "https://github.com/omarefg/platziverse#readme",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
+}
