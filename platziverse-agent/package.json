@@ -1,0 +1,30 @@
+{
+  "name": "platziverse-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A simple IoT Platform - Agent",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omarefg/platziverse.git"
+  },
+  "author": "@omarefg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/omarefg/platziverse/issues"
+  },
+  "homepage": "https://github.com/omarefg/platziverse#readme",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "defaults": "^1.0.3",
+    "mqtt": "^2.18.8",
+    "platziverse-utils": "file:../platziverse-utils",
+    "uuid": "^3.3.2"
+  }
+}

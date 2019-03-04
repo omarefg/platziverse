@@ -9,7 +9,7 @@ const db = require('platziverse-db')
 const logging = s => debug(s)
 const { handleFatalError, handleError } = utils.request
 const config = utils.db.config(false, logging)
-const { parsePayload } = require('./utils')
+const parsePayload = utils.general.parsePayload
 
 const backend = {
   type: 'redis',
