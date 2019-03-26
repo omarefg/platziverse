@@ -5,17 +5,25 @@ const request = require('supertest')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 const utils = require('platziverse-utils')
+const util = require('util')
+const auth = require('../auth')
+
 const agentFixtures = utils.test.fixtures.agent()
 const metricFixtures = utils.test.fixtures.metric()
+const sign = util.promisify(auth.sign)
+const authConfig = utils.auth
 
 const uuid = 'yyy-yyy-yyy'
 const type = 'memory'
 
-let sandbox, server, dbStub, api
+let sandbox, server, dbStub, api, token
 let agentStub = {}
 let metricStub = {}
 
 test.beforeEach(async () => {
+
+  token = await sign({ admin: true, username: 'platzi' }, authConfig.secret)
+
   sandbox = sinon.createSandbox()
 
   dbStub = sandbox.stub()
@@ -42,6 +50,7 @@ test.afterEach(() => sandbox && sinon.restore())
 test.serial.cb('/api/agents', t => {
   request(server)
     .get('/api/agents')
+    .set('Authorization', `Bearer ${token}`)
     .end((_err, res) => {
       t.truthy(res.status === 200)
       t.falsy(res.error, 'Should not return an error')
@@ -52,9 +61,20 @@ test.serial.cb('/api/agents', t => {
     })
 })
 
+test.serial.cb('/api/agents - no token', t => {
+  request(server)
+    .get('/api/agents')
+    .end((_err, res) => {
+      t.truthy(res.status === 500)
+      t.truthy(res.error, 'Should return an error')
+      t.end()
+    })
+})
+
 test.serial.cb('/api/agent/:uuid', t => {
   request(server)
     .get('/api/agent/yyy-yyy-yyy')
+    .set('Authorization', `Bearer ${token}`)
     .end((_err, res) => {
       t.truthy(res.status === 200)
       t.falsy(res.error, 'Should not return an error')
@@ -68,6 +88,7 @@ test.serial.cb('/api/agent/:uuid', t => {
 test.serial.cb('/api/agent/:uuid - not found', t => {
   request(server)
     .get('/api/agent/yyy')
+    .set('Authorization', `Bearer ${token}`)
     .end((_err, res) => {
       t.truthy(res.status === 404)
       t.truthy(res.error, 'Should return an error')
@@ -78,6 +99,7 @@ test.serial.cb('/api/agent/:uuid - not found', t => {
 test.serial.cb('/api/metrics/:uuid', t => {
   request(server)
     .get('/api/metrics/yyy-yyy-yyy')
+    .set('Authorization', `Bearer ${token}`)
     .end((_err, res) => {
       t.truthy(res.status === 200)
       t.falsy(res.error, 'Should not return an error')
@@ -91,6 +113,7 @@ test.serial.cb('/api/metrics/:uuid', t => {
 test.serial.cb('/api/metrics/:uuid - not found', t => {
   request(server)
     .get('/api/metrics/yyy')
+    .set('Authorization', `Bearer ${token}`)
     .end((_err, res) => {
       t.truthy(res.status === 404)
       t.truthy(res.error, 'Should return an error')
@@ -101,6 +124,7 @@ test.serial.cb('/api/metrics/:uuid - not found', t => {
 test.serial.cb('/api/metrics/:uuid/:type', t => {
   request(server)
     .get('/api/metrics/yyy-yyy-yyy/memory')
+    .set('Authorization', `Bearer ${token}`)
     .end((_err, res) => {
       t.truthy(res.status === 200)
       t.falsy(res.error, 'Should not return an error')
@@ -114,6 +138,7 @@ test.serial.cb('/api/metrics/:uuid/:type', t => {
 test.serial.cb('/api/metrics/:uuid/:type - not found', t => {
   request(server)
     .get('/api/metrics/yyyy/memory')
+    .set('Authorization', `Bearer ${token}`)
     .end((_err, res) => {
       t.truthy(res.status === 404)
       t.truthy(res.error, 'Should return an error')

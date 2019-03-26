@@ -4,10 +4,13 @@ const utils = require('platziverse-utils')
 const debug = require('debug')('platziverse:api:routes')
 const dbDebug = require('debug')('platziverse:api:db')
 const express = require('express')
+const auth = require('express-jwt')
 const db = require('platziverse-db')
+const guard = require('express-jwt-permissions')()
 const logging = s => dbDebug(s)
 const config = utils.db.config(false, logging)
 const chalk = require('chalk')
+const authConfig = utils.auth
 
 const api = express.Router()
 
@@ -29,18 +32,29 @@ api.use('*', async (req, res, next) => {
   next()
 })
 
-api.get('/agents', async (req, res, next) => {
+api.get('/agents', auth(authConfig), async (req, res, next) => {
   debug(`My Lord, a request to /agents has been done`)
+
+  const { user } = req
+
+  if (!user || !user.username) {
+    return next(new Error('Not authorized'))
+  }
+
   let agents = []
   try {
-    agents = await Agent.findConnected()
+    if (user.admin) {
+      agents = await Agent.findConnected()
+    } else {
+      agents = await Agent.findByUsername(user.username)
+    }
   } catch (error) {
     return next(error)
   }
   res.status(200).send(agents)
 })
 
-api.get('/agent/:uuid', async (req, res, next) => {
+api.get('/agent/:uuid', auth(authConfig), async (req, res, next) => {
   const { uuid } = req.params
   debug(`My Lord, a request to /agent/${uuid} has been done`)
   let agent = null
@@ -53,7 +67,7 @@ api.get('/agent/:uuid', async (req, res, next) => {
   res.status(200).send(agent)
 })
 
-api.get('/metrics/:uuid', async (req, res, next) => {
+api.get('/metrics/:uuid', auth(authConfig), guard.check(['metrics:read']), async (req, res, next) => {
   const { uuid } = req.params
   debug(`My Lord, a request to /metrics/${uuid} has been done`)
   let metrics = []
@@ -66,7 +80,7 @@ api.get('/metrics/:uuid', async (req, res, next) => {
   res.status(200).send(metrics)
 })
 
-api.get('/metrics/:uuid/:type', async (req, res, next) => {
+api.get('/metrics/:uuid/:type', auth(authConfig), async (req, res, next) => {
   const { uuid, type } = req.params
   debug(`My Lord, a request to /metrics/${uuid}/${type} has been done`)
   let metrics = []

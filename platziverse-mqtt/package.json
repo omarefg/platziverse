@@ -2,6 +2,7 @@
   "name": "platziverse-mqtt",
   "version": "1.0.0",
   "description": "A simple IoT Platform - MQTT Server",
+  "private": true,
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server.js",
