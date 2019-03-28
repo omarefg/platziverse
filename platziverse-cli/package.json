@@ -5,7 +5,7 @@
   "private": true,
   "bin": "platziverse.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/omarefg/platziverse/issues"
   },
-  "homepage": "https://github.com/omarefg/platziverse#readme"
+  "homepage": "https://github.com/omarefg/platziverse#readme",
+  "dependencies": {
+    "args": "^5.0.1",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.12",
+    "standard": "^12.0.1"
+  }
 }
